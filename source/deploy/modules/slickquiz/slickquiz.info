@@ -1,0 +1,5 @@
+name = SlickQuiz
+description = "SlickQuiz is a module to use jQuery plugin for creating dynamic quizzes"
+package = Europe Team
+core = 7.x
+

@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * SlickQuiz is a module to use jQuery plugin for creating dynamic quizzes.
+ */
+
+/**
+ * Implements hook_node_info().
+ */
+function slickquiz_node_info() {
+    return array(
+      'slickquiz' => array(
+          'name' => t('SlickQuiz Item'),
+          'base' => 'node_content',
+          'has_title' => TRUE,
+          'title_label' => t('SlickQuiz Item Title'), 
+          'description' => t('Create a new item for SlickQuiz, accessible to users'),                   
+      )  
+    );    
+}

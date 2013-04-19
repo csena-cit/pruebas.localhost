@@ -1,0 +1,120 @@
+<?php
+
+/**
+ * @file
+ * Install file for SlickQuiz module.
+ */
+
+define('SLICKQUIZ_NODE_TYPE', 'slickquiz');
+
+/**
+ * Implements hook_install().
+ */
+function slickquiz_install() {
+  
+  node_types_rebuild();
+  
+  _slickquiz_add_default_content_type_fields();
+
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function slickquiz_uninstall() {
+  _slickquiz_delete_nodes();
+  _slickquiz_delete_default_content_type_fields();
+  _slickquiz_delete_content_type();
+  cache_clear_all();
+
+}
+
+function _slickquiz_add_default_content_type_fields() {
+  $fields = _slickquiz_get_content_type_fields_definition();
+
+  foreach ($fields as $field) {
+    field_create_field($field);
+    field_create_instance($field);
+  }
+}
+
+function _slickquiz_delete_default_content_type_fields() {
+  $fields = _slickquiz_get_content_type_fields_definition();
+
+  foreach ($fields as $field) {
+    field_delete_instance($field);
+    field_delete_field($field['field_name']);
+  }
+}
+
+function _slickquiz_delete_nodes() {
+  $query = <<<QUERY
+    SELECT n.nid
+      FROM {node} n
+     WHERE n.type = :type
+QUERY;
+
+  $args = array(
+    ':type' => SLICKQUIZ_NODE_TYPE,
+  );
+
+  $slickquizs = db_query($query, $args);
+  foreach($slickquizs as $node) {
+    node_delete($node->nid);
+  }
+}
+
+function _slickquiz_delete_content_type() {
+  node_type_delete(SLICKQUIZ_NODE_TYPE);
+}
+
+function _slickquiz_get_content_type_fields_definition() {
+  $weight = 0;
+
+  $fields = array(
+    array(
+      'field_name' => 'field_slickquiz_question',
+      'type' => 'text',
+      'translatable' => TRUE,
+      'entity_type' => 'node',
+      'bundle' => 'slickquiz',
+      'label' => t('Question'),
+      'required' => TRUE,  
+      'widget' => array(
+        'type' => 'text_textfield',
+        'weight' => $weight++,
+      ),  
+    ),
+    array(
+      'field_name' => 'field_slickquiz_answers',
+      'type' => 'text_long',
+      'translatable' => TRUE,
+      'required' => TRUE,  
+      'entity_type' => 'node',
+      'bundle' => 'slickquiz',
+      'label' => t('Answers'), 
+      'widget' => array(
+        'type' => 'text_textarea',
+        'weight' => $weight++,
+      ),
+      'description' => t('Enter only one answer per line'),  
+      ),
+    array(
+      'field_name' => 'field_slickquiz_correct_answer',
+      'type' => 'text',
+      'translatable' => TRUE,
+      'required' => TRUE,  
+      'entity_type' => 'node',
+      'bundle' => 'slickquiz',
+      'label' => t('Correct Answer'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'weight' => $weight++,
+      ),
+      'description' => t('Rewrite the correct answer'),  
+    ),
+    
+  );
+  
+  return $fields;
+}
