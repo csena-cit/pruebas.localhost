@@ -5,7 +5,8 @@
  * Install file for SlickQuiz module.
  */
 
-define('SLICKQUIZ_NODE_TYPE', 'slickquiz');
+define('SQUESTION_NODE_TYPE', 'squestion');
+define('SQUIZ_NODE_TYPE', 'squiz');
 
 /**
  * Implements hook_install().
@@ -52,10 +53,12 @@ function _slickquiz_delete_nodes() {
     SELECT n.nid
       FROM {node} n
      WHERE n.type = :type
+     OR n.type    = :type2
 QUERY;
 
   $args = array(
-    ':type' => SLICKQUIZ_NODE_TYPE,
+    ':type'  => SQUIZ_NODE_TYPE,
+    ':type2' => SQUESTION_NODE_TYPE,   
   );
 
   $slickquizs = db_query($query, $args);
@@ -65,7 +68,8 @@ QUERY;
 }
 
 function _slickquiz_delete_content_type() {
-  node_type_delete(SLICKQUIZ_NODE_TYPE);
+  node_type_delete(SQUIZ_NODE_TYPE);
+  node_type_delete(SQUESTION_NODE_TYPE);
 }
 
 function _slickquiz_get_content_type_fields_definition() {
@@ -73,11 +77,11 @@ function _slickquiz_get_content_type_fields_definition() {
 
   $fields = array(
     array(
-      'field_name' => 'field_slickquiz_question',
+      'field_name' => 'field_squestion_question',
       'type' => 'text',
       'translatable' => TRUE,
       'entity_type' => 'node',
-      'bundle' => 'slickquiz',
+      'bundle' => 'squestion',
       'label' => t('Question'),
       'required' => TRUE,  
       'widget' => array(
@@ -86,12 +90,12 @@ function _slickquiz_get_content_type_fields_definition() {
       ),  
     ),
     array(
-      'field_name' => 'field_slickquiz_answers',
+      'field_name' => 'field_squestion_answers',
       'type' => 'text_long',
       'translatable' => TRUE,
       'required' => TRUE,  
       'entity_type' => 'node',
-      'bundle' => 'slickquiz',
+      'bundle' => 'squestion',
       'label' => t('Answers'), 
       'widget' => array(
         'type' => 'text_textarea',
@@ -100,12 +104,12 @@ function _slickquiz_get_content_type_fields_definition() {
       'description' => t('Enter only one answer per line'),  
       ),
     array(
-      'field_name' => 'field_slickquiz_correct_answer',
+      'field_name' => 'field_squestion_correct_answer',
       'type' => 'text',
       'translatable' => TRUE,
       'required' => TRUE,  
       'entity_type' => 'node',
-      'bundle' => 'slickquiz',
+      'bundle' => 'squestion',
       'label' => t('Correct Answer'),
       'widget' => array(
         'type' => 'text_textfield',

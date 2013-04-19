@@ -10,12 +10,19 @@
  */
 function slickquiz_node_info() {
     return array(
-      'slickquiz' => array(
-          'name' => t('SlickQuiz Item'),
+      'squestion' => array(
+          'name' => t('SlickQuiz Question'),
           'base' => 'node_content',
           'has_title' => TRUE,
-          'title_label' => t('SlickQuiz Item Title'), 
-          'description' => t('Create a new item for SlickQuiz, accessible to users'),                   
+          'title_label' => t('SlickQuiz Question Title'), 
+          'description' => t('Create a question for SlickQuiz, accessible to users'),                   
+      ),
+      'squiz' => array(
+          'name' => t('SlickQuiz'),
+          'base' => 'node_content',
+          'has_title' => TRUE,
+          'title_label' => t('SlickQuiz Title'), 
+          'description' => t('Create a SlickQuiz accessible to users'),                   
       )  
     );    
 }
